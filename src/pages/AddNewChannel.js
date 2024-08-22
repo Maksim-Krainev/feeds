@@ -18,7 +18,7 @@ const AddNewChannel = () => {
 
   useEffect(() => {
     if (state.channelId) {
-      setChannelName(`Channel ID: ${state.channelId}`);
+      setChannelName(`FEED ID: ${state.channelId}`);
       setTags(state.keywords || []);
     }
   }, [state.channelId, state.keywords]);
@@ -59,16 +59,59 @@ const AddNewChannel = () => {
     setLoading(true);
     setSearchError('');
 
-    // Placeholder for search functionality
-    // For now, we just simulate a search process
     try {
-      // Simulate a search process with a timeout
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Clear the error after search
-      setSearchError('');
+      // Step 1: Create Kernel
+      const kernelResponse = await fetch('https://google-news-observer-3.hype.dev/api/kernel/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': 'Basic S2V5Ym9hcmRBcm15Om1hbnVzY3JpcHRfaW5fdGhlX3Bhc3QxNTY='
+        },
+      });
+
+      const kernelData = await kernelResponse.json();
+      const kernelId = kernelData._id;
+
+      console.log('Kernel ID:', kernelId);
+
+      // Step 2: Create Kernel Keys for each tag
+      const createKeyPromises = tags.map(tag => {
+        const formattedTag = tag.trim().replace(/^#/, '');
+        console.log('Creating key for tag:', formattedTag);
+
+        // Convert data to x-www-form-urlencoded format
+        const params = new URLSearchParams();
+        params.append('kernelIdentifier', kernelId);
+        params.append('text', formattedTag);
+        params.append('culture', 'en');
+
+        return fetch('https://google-news-observer-3.hype.dev/api/key/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': 'Basic S2V5Ym9hcmRBcm15Om1hbnVzY3JpcHRfaW5fdGhlX3Bhc3QxNTY='
+          },
+          body: params.toString()
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Key creation response:', data);
+          if (data._id) {
+            console.log(`Key for tag "${formattedTag}" created successfully:`, data);
+          } else {
+            console.warn(`Key for tag "${formattedTag}" was not created successfully:`, data);
+          }
+        })
+        .catch(error => {
+          console.error('Error creating key for tag:', error);
+        });
+      });
+
+      await Promise.all(createKeyPromises);
+      console.log('All keys created successfully');
     } catch (error) {
       setSearchError('Failed to perform search');
+      console.error('Error during search:', error);
     } finally {
       setLoading(false);
     }
