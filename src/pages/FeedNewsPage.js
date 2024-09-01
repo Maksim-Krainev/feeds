@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Menu from '../components/MenuBox/MenuBox';
+import Loader from '../components/Loader/Loader';
 
 const FeedNewsPage = () => {
-  const { feedId } = useParams(); // Get feedId from route parameters
+  const { feedId } = useParams(); 
   const [news, setNews] = useState([]);
+  const [newsToday, setNewsToday] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -32,7 +34,13 @@ const FeedNewsPage = () => {
           url: event.uri,
         }));
 
+        // Calculate number of news items added today
+        const today = new Date().toISOString().split('T')[0]; // Format as YYYY-MM-DD
+        const todayNews = newsItems.filter(item => item.date.split('T')[0] === today);
+
         setNews(newsItems);
+        setNewsToday(todayNews);
+        
       } catch (error) {
         setError('Failed to fetch news');
       } finally {
@@ -46,32 +54,50 @@ const FeedNewsPage = () => {
   return (
     <div className="main_container">
       <Menu />
-      <div className="container_box">
+      <div className="container_box white_bg">
         <h1>News for Feed ID: {feedId}</h1>
+        <div className="news_summary">
+          <div className="channel_events">
+            Total News: {news.length} {news.length === 0 } 
+            <div className="new_event">
+            {newsToday.length > 0 ? (
+              <>
+                <h2>News Added Today</h2>
+                {newsToday.map((item, index) => (
+                  <div
+                    key={item.id}
+                    className={`container_box ${index % 2 === 0 ? 'gray_bg' : 'white_bg'}`}
+                  >
+                    <div className="news_date">{new Date(item.date).toLocaleDateString()}</div>
+                    <h2 className="news_text">{item.text}</h2>
+                    <a href={item.url} target="_blank" rel="noopener noreferrer">Read more</a>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <p>+0</p>
+            )}
+          </div>
+          </div>
+        </div>
+      </div>
+      
+      <div className="news_container">
         {loading ? (
-          <div>Loading...</div>
+          <Loader />
         ) : error ? (
           <div className="error_message">{error}</div>
-        ) : news.length > 0 ? (
+        ) : (
           news.map((item, index) => (
             <div
               key={item.id}
-              className={`news_item ${index % 2 === 0 ? 'light' : 'dark'}`}
-              style={{
-                backgroundColor: index % 2 === 0 ? '#ffffff' : '#2f2f2f',
-                color: index % 2 === 0 ? '#000000' : '#ffffff',
-                padding: '15px',
-                margin: '10px 0',
-                borderRadius: '5px',
-              }}
+              className={`container_box ${index % 2 === 0 ? 'gray_bg' : 'white_bg'}`}
             >
               <div className="news_date">{new Date(item.date).toLocaleDateString()}</div>
-              <div className="news_text">{item.text}</div>
+              <h3 className="news_text">{item.text}</h3>
               <a href={item.url} target="_blank" rel="noopener noreferrer">Read more</a>
             </div>
           ))
-        ) : (
-          <div>No news found</div>
         )}
       </div>
     </div>

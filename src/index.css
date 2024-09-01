@@ -29,7 +29,7 @@ html {
 body {
   padding: 0;
   margin: 0;
-  background-color: #2f2f2f;
+  background-color: #9b9b9b;
   background-image: url('./img/bg_2.png');
   background-position: center;
   background-repeat: repeat-y;
@@ -68,7 +68,7 @@ body {
   height: 100%;
   top: 0;
   left: 0;
-  background-color: #2f2f2f;
+  background-color: #9b9b9b;
 }
 
 .lds-ripple {
@@ -130,7 +130,7 @@ body {
   cursor: pointer;
   user-select: none;
   font-size: 20px;
-  background-color: #2f2f2f;
+  background-color: #9b9b9b;
   padding: 8px; 
   border-radius: 5px;
   border: none; 
@@ -161,7 +161,7 @@ body {
 .menu_item {
   display: block;
   text-decoration: none;
-  color: #212121;
+  color: #9b9b9b;
 }
 
 .menu_box a {
@@ -255,7 +255,7 @@ h2.channel_name {
   margin: 3px;
   padding: 3px 10px;
   display: inline-block;
-  background-color: #2f2f2f;
+  background-color: #9b9b9b;
   border-radius: 10em;
 }
 
@@ -284,7 +284,7 @@ h2.channel_name {
   border-radius: 10px;
   display: inline-block;
   user-select: none;
-  border: 1px solid #212121;
+  border: 1px solid #9b9b9b;
 }
 
 .post_desc {
@@ -319,7 +319,7 @@ h2.channel_name {
   cursor: pointer;
   font-size: 15px;
   color: #fff;
-  background: #7a7a7a;
+  background: #3f3f3f;
   transition: .5s;
 }
 
@@ -354,8 +354,8 @@ h2.channel_name {
 }
 
 .add_key_button {
-  background: #7a7a7a;
-  border: 1px solid #7a7a7a;
+  background: #9b9b9b;
+  border: 1px solid #9b9b9b;
   color: #fff;
   padding: 5px 7px;
   font-size: 15px;
@@ -402,12 +402,12 @@ h2.channel_name {
 }
 
 .channel_add_but:hover {
-  background-color: #2f2f2f;
+  background-color: #3f3f3f;
   color: #fff;
 }
 
 .channel_delete_but:hover {
-  background-color: #2f2f2f;
+  background-color: #3f3f3f;
   color: #fff;
 }
 
@@ -436,14 +436,17 @@ h2.channel_name {
   margin-right: 5px;
   padding: 2px 7px;
   border-radius: 10em;
-  border: 1px solid #2f2f2f;
+  border: 1px solid #9b9b9b;
+  margin: 0 auto;
 }
 
 .channel_events {
   display: flex;
+  max-width: 150px;
   padding: 2px 7px;
   border-radius: 10em;
-  border: 1px solid #2f2f2f;
+  border: 1px solid #9b9b9b;
+  align-items: center;
 }
 
 .new_event {
@@ -464,7 +467,7 @@ h2.channel_name {
   margin: 3px;
   padding: 3px 10px;
   display: inline-block;
-  background-color: #2f2f2f;
+  background-color: #9b9b9b;
   border-radius: 10em;
 }
 
@@ -648,46 +651,45 @@ h2.channel_name {
   flex-direction: column
 }
 
-/* Стилі для новин з темним фоном */
+
 .container_box.dark {
-  background-color: #2f2f2f; /* Темний фон */
-  color: #ffffff; /* Білий текст */
+  background-color: #9b9b9b; 
+  color: #000000; 
 }
 
 .container_box.dark .channel_update,
 .container_box.dark .channel_events {
-  border: 1px solid white; /* Біла обводка */
+  border: 1px solid white; 
 }
 
 .container_box.dark .chan_keyword {
-  background-color: white; /* Білий фон для тегів */
-  color: black; /* Чорний текст */
+  background-color: white; 
+  color: black; 
 }
 
-/* Стилі для новин з світлим фоном */
+
 .container_box.light {
-  background-color: #ffffff; /* Світлий фон */
-  color: #000000; /* Чорний текст */
+  background-color: #ffffff; 
+  color: #000000; 
 }
 
 .container_box.light .channel_update,
 .container_box.light .channel_events {
-  border: 1px solid #2f2f2f; /* Сіра обводка */
+  border: 1px solid #9b9b9b; 
 }
 
 .container_box.light .chan_keyword {
-  background-color: #2f2f2f; /* Чорний фон для тегів */
-  color: white; /* Білий текст */
+  background-color: #9b9b9b; 
+  color: rgb(0, 0, 0); 
 }
 
-/* Стилі для чекбокса */
+
 .channel_edit {
   margin-right: 15px;
 }
 
 
 
-/* Стилі для тега */
 .chan_keyword {
   display: inline-block;
   padding: 3px 6px;
@@ -695,112 +697,48 @@ h2.channel_name {
   border-radius: 3px;
 }
 
-/* Стилі для тексту "Tags" */
 .channel_keywords_label {
   font-weight: bold;
   margin-bottom: 5px;
   display: block;
 }
 
-/* Стилі для повідомлення про відсутність тегів */
 .no_keywords {
   font-style: italic;
   color: gray;
 }
 
-/* Контейнер для інформації про канал */
 .channel_info_cont {
-  display: flex;/* Вирівнює чекбокс та контейнер по верху */
-  margin: 10px 0; /* Відступи зверху і знизу */
+  display: flex;
+  margin: 10px 0; 
+  justify-content: space-evenly
 }
 
-/* Стилі для контейнера з чекбоксом */
+
 .channel_edit {
   display: flex;
-  align-items: center; /* Центрування по вертикалі */
-  margin-right: 50px; /* Відстань між чекбоксом і загальною коміркою */
+  align-items: center; 
+  margin-right: 50px; 
 }
 
-/* Стилі для чекбокса */
+
 .channel_edit input[type="checkbox"] {
-  width: 20px; /* Ширина чекбокса */
-  height: 20px; /* Висота чекбокса */
-  accent-color: #868686; /* Колір акценту чекбокса (синій) */
-  cursor: pointer; /* Курсор у вигляді руки при наведенні */
+  width: 20px; 
+  height: 20px; 
+  accent-color: #868686; 
+  cursor: pointer; 
 }
-
-/* Стилі для загальної комірки */
 .channel_box {
   display: flex;
   flex-direction: column;
 }
 
-
-
-@media screen and (max-width: 375px) {
-  .container_box {
-      width: 335px;
-  }
-
-  .post_box {
-      margin: 0px;
-  }
-  
-  .hannel_name_autor {
-      width: 250px;
-  }
-
-  .post_box {
-      width: 230px;
-  }
-
-  .post_main_text {
-      width: 245px;
-  }
-
-  .post_download_box {
-      width: 170px;
-  }
-
-  .post_download_cont {
-      display: inline-block;
-  }
-
-  .download_but {
-      text-align: center;
-      font-size: 17px;
-      margin: 3px 0px 7px 0px;
-  }
+.container_box.white_bg {
+  background-color: #ffffff;
+  padding: 30px;
 }
 
-@media screen and (max-width: 320px) {
-  body {
-      zoom: 0.8;
-  }
-
-  .container_box {
-      width: 335px;
-  }
-  
-  .hannel_name_autor {
-      width: 210px;
-  }
-
-  .post_box {
-      margin: 0;
-      width: 200px;
-  }
-
-  .add_keyword_box {
-      width: 193px;
-  }
-
-  .add_keyword_box input {
-      width: 120px;
-  }
-
-  .post_download_box {
-      width: 150px;
-  }
+.container_box.gray_bg {
+  background-color: #9b9b9b;
+  padding: 30px;
 }
-

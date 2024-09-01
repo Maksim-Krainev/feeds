@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Menu from '../components/MenuBox/MenuBox';
 import { Link, useNavigate } from 'react-router-dom';
+import Menu from '../components/MenuBox/MenuBox';
 import "../index.css";
 
 const Channel = () => {
@@ -30,13 +30,10 @@ const Channel = () => {
 
         const data = JSON.parse(text);
 
-        const kernels = data;
-        const apiChannels = kernels.map((kernel) => ({
+        const apiChannels = data.map((kernel) => ({
           _id: kernel._id,
           channelName: `Feed ID: ${kernel._id}`,
-          updateDate: new Date(kernel.date).toLocaleDateString(),
-          events: 'Loading...',
-          newEvents: 'Loading...',
+          updateDate: '',
           keywords: [],
         }));
 
@@ -44,45 +41,6 @@ const Channel = () => {
 
         for (const channel of apiChannels) {
           try {
-            const eventsResponse = await fetch(`https://google-news-observer-3.hype.dev/api/kernel/events?kernelIdentifier=${encodeURIComponent(channel._id)}`, {
-              headers: {
-                'Authorization': 'Basic S2V5Ym9hcmRBcm15Om1hbnVzY3JpcHRfaW5fdGhlX3Bhc3QxNTY=',
-              },
-            });
-
-            if (!eventsResponse.ok) {
-              throw new Error(`HTTP error! status: ${eventsResponse.status}`);
-            }
-
-            const eventsText = await eventsResponse.text();
-            const eventsData = eventsText ? JSON.parse(eventsText) : [];
-
-            if (!Array.isArray(eventsData)) {
-              console.error(`Events data is not an array for channel ID ${channel._id}`);
-              continue;
-            }
-
-            const eventCount = eventsData.length;
-
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            const newEventsCount = eventsData.filter(event => {
-              const eventDate = new Date(event.date);
-              return eventDate >= today;
-            }).length;
-
-            setChannels((prevChannels) =>
-              prevChannels.map((c) =>
-                c._id === channel._id
-                  ? {
-                      ...c,
-                      events: eventCount,
-                      newEvents: newEventsCount,
-                    }
-                  : c
-              )
-            );
-
             const keysResponse = await fetch(`https://google-news-observer-3.hype.dev/api/key/list?kernelIdentifier=${encodeURIComponent(channel._id)}`, {
               headers: {
                 'Authorization': 'Basic S2V5Ym9hcmRBcm15Om1hbnVzY3JpcHRfaW5fdGhlX3Bhc3QxNTY=',
@@ -108,17 +66,51 @@ const Channel = () => {
                   : c
               )
             );
+
+            // Fetch events to update the `updateDate`
+            fetchChannelEvents(channel._id);
           } catch (error) {
-            console.error(`Error fetching data for channel ID ${channel._id}:`, error);
+            console.error(`Error fetching keywords for channel ID ${channel._id}:`, error);
           }
         }
       } catch (error) {
         console.error('Error fetching channels:', error);
-        if (error.message.includes('status: 504')) {
-          setError('504 Gateway Timeout');
-        } else {
-          setError('An error occurred while fetching channels.');
+        setError('An error occurred while fetching channels.');
+      }
+    };
+
+    const fetchChannelEvents = async (channelId) => {
+      try {
+        const response = await fetch(`https://google-news-observer-3.hype.dev/api/event/list?kernelIdentifier=${encodeURIComponent(channelId)}`);
+    
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+    
+        const eventsText = await response.text();
+        const eventsData = eventsText ? JSON.parse(eventsText) : [];
+    
+        if (eventsData.length > 0) {
+          const firstEvent = eventsData[0];
+          const eventDate = new Date(firstEvent.date);
+    
+          // Formatted to dd.mm.yy.
+          const formattedDate = eventDate.toLocaleDateString('uk-UA', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+          });
+    
+          setChannels((prevChannels) =>
+            prevChannels.map((channel) =>
+              channel._id === channelId
+                ? { ...channel, updateDate: formattedDate }
+                : channel
+            )
+          );
+        }
+      } catch (error) {
+        console.error(`Error fetching events for channel ID ${channelId}:`, error);
       }
     };
 
@@ -160,7 +152,7 @@ const Channel = () => {
   return (
     <div>
       <Menu />
-      <div className='container_box'>
+      <div className='container_box gray_bg'>
         <div className="channels_conf_buts">
           <Link to='/add-new-channel' className="channel_add_but">New feed</Link>
           <button onClick={handleAddNews} className="channel_add_but">Edit feed</button>
@@ -175,7 +167,7 @@ const Channel = () => {
         channels.map((channel, index) => (
           <div
             key={channel._id}
-            className={`container_box ${index % 2 === 0 ? 'dark' : 'light'}`}
+            className={`container_box ${index % 2 === 0 ? 'light' : 'dark'}`}
           >
             <div className="channel_info_cont">
               <div className="channel_edit">
@@ -187,25 +179,29 @@ const Channel = () => {
               </div>
               <div className="channel_box">
                 <div className="channel_tit_box">
-                  <div className="channel_title">{channel.channelName}</div>
+                  <div
+                    className="channel_title"
+                    onClick={() => handleViewNews(channel._id)} 
+                    style={{ cursor: 'pointer' }} 
+                  >
+                    {channel.channelName}
+                  </div>
                   <div className="channel_info_box">
-                    <div className="channel_update">Updated: {channel.updateDate}</div>
-                    <div className="channel_events">Events: {channel.events}
-                      <div className="new_event">+{channel.newEvents}</div>
+                    <div className="channel_update">
+                      Updated: {channel.updateDate ? channel.updateDate : 'No date available'}
                     </div>
                   </div>
+                  <div className="channel_keywords">
+                    <div className="channel_keywords_label">Tags:</div>
+                    {channel.keywords.length > 0 ? (
+                      channel.keywords.map((keyword, index) => (
+                        <div key={index} className="chan_keyword">#{keyword}</div>
+                      ))
+                    ) : (
+                      <div className="no_keywords">No keywords</div>
+                    )}
+                  </div>
                 </div>
-                <div className="channel_keywords">
-                  <div className="channel_keywords_label">Tags:</div>
-                  {channel.keywords.length > 0 ? (
-                    channel.keywords.map((keyword, index) => (
-                      <div key={index} className="chan_keyword">#{keyword}</div>
-                    ))
-                  ) : (
-                    <div className="no_keywords">No keywords</div>
-                  )}
-                </div>
-                <button onClick={() => handleViewNews(channel._id)} className="channel_view_news_but">View News</button>
               </div>
             </div>
           </div>

@@ -195,7 +195,7 @@ const AddNewChannel = () => {
           key={index}
           className={`container_box ${box.className || ''}`}
           style={{
-            backgroundColor: index % 2 === 0 ? '#ffffff' : '#2f2f2f',
+            backgroundColor: index % 2 === 0 ? '#ffffff' : '#9b9b9b',
             color: index % 2 === 0 ? '#000000' : '#ffffff',
           }}
         >

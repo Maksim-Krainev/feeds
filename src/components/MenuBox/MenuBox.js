@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Menu = () => {
   const [menuVisible, setMenuVisible] = useState(false);
+  const navigate = useNavigate(); 
 
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
+  };
+
+  const handleNavigation = (path) => {
+    navigate(path);
+    toggleMenu(); 
   };
 
   return (
@@ -30,8 +37,8 @@ const Menu = () => {
         </svg>
       </button>
       <div className={`menu_box ${menuVisible ? 'menu_box_visible' : ''}`}>
-        <a href="/" className="menu_item">Home</a>
-        <a href="/channels" className="menu_item">Channels</a>
+        <a href="/" className="menu_item" onClick={(e) => { e.preventDefault(); handleNavigation('/'); }}>Home</a>
+        <a href="/channels" className="menu_item" onClick={(e) => { e.preventDefault(); handleNavigation('/channels'); }}>Channels</a>
       </div>
     </div>
   );
