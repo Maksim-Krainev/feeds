@@ -386,30 +386,15 @@ h2.channel_name {
   border-radius: 5px;
   cursor: pointer;
   transition: .5s;
+  text-decoration: none;
 }
 
-.channel_delete_but {
-  display: inline-block;
-  padding: 5px 7px;
-  margin: 5px;
-  align-items: center;
-  background-color: #fff;
-  color: #000;
-  border: 1px solid #fff;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: .5s;
-}
 
 .channel_add_but:hover {
   background-color: #3f3f3f;
   color: #fff;
 }
 
-.channel_delete_but:hover {
-  background-color: #3f3f3f;
-  color: #fff;
-}
 
 .channel_info_cont {
   margin: 0 auto;
@@ -742,3 +727,39 @@ h2.channel_name {
   background-color: #9b9b9b;
   padding: 30px;
 }
+
+.channel_edit_button {
+  display: none;
+  position: absolute;
+  top: 5%;
+  right: 10%;
+  background-color: inherit;
+  border: none;
+  padding: 3px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.container_box {
+  position: relative;
+  transition: box-shadow 0.3s ease, transform 0.3s ease; 
+}
+
+.container_box:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+  transform: translateY(-4px); 
+}
+
+.container_box:hover .channel_edit_button {
+  display: block;
+  opacity: 1;
+}
+
+.channel_edit_button:hover {
+  opacity: 1;
+}
+
+

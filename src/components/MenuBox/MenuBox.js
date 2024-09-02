@@ -38,7 +38,7 @@ const Menu = () => {
       </button>
       <div className={`menu_box ${menuVisible ? 'menu_box_visible' : ''}`}>
         <a href="/" className="menu_item" onClick={(e) => { e.preventDefault(); handleNavigation('/'); }}>Home</a>
-        <a href="/channels" className="menu_item" onClick={(e) => { e.preventDefault(); handleNavigation('/channels'); }}>Channels</a>
+        <a href="/feeds" className="menu_item" onClick={(e) => { e.preventDefault(); handleNavigation('/feeds'); }}>Feeds</a>
       </div>
     </div>
   );

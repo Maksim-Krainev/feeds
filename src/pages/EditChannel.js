@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Menu from '../components/MenuBox/MenuBox';
 
-const AddNewChannel = () => {
+
+const EditChannel = () => {
   const [channelName, setChannelName] = useState('Add New Channel');
   const [newTag, setNewTag] = useState('');
   const [tags, setTags] = useState([]);
+  const [savedTags, setSavedTags] = useState(new Set()); 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [searchError, setSearchError] = useState('');
+
 
   const location = useLocation();
   const state = location.state || { channelId: '', keywords: [] };
@@ -17,6 +20,7 @@ const AddNewChannel = () => {
     if (state.channelId) {
       setChannelName(`FEED ID: ${state.channelId}`);
       setTags(state.keywords || []);
+      setSavedTags(new Set(state.keywords || [])); // Initialize savedTags with existing keywords
     }
   }, [state.channelId, state.keywords]);
 
@@ -36,9 +40,17 @@ const AddNewChannel = () => {
     setTags(tags.filter(tag => tag !== tagToRemove));
   };
 
-  const handleSearch = async () => {
+
+  const handleSaveTags = async () => {
     if (tags.length === 0) {
-      setSearchError('No tags to search');
+      setSearchError('No tags to save');
+      return;
+    }
+
+    // Filter out tags that are already saved
+    const newTags = tags.filter(tag => !savedTags.has(tag));
+    if (newTags.length === 0) {
+      setSearchError('All tags are already saved');
       return;
     }
 
@@ -46,28 +58,14 @@ const AddNewChannel = () => {
     setSearchError('');
 
     try {
-      // Step 1: Create Kernel
-      const kernelResponse = await fetch('https://google-news-observer-3.hype.dev/api/kernel/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': 'Basic S2V5Ym9hcmRBcm15Om1hbnVzY3JpcHRfaW5fdGhlX3Bhc3QxNTY='
-        },
-      });
-
-      const kernelData = await kernelResponse.json();
-      const kernelId = kernelData._id;
-
-      console.log('Kernel ID:', kernelId);
-
-      // Step 2: Create Kernel Keys for each tag
-      const createKeyPromises = tags.map(tag => {
+      // Use the feedId from state as kernelIdentifier
+      const kernelIdentifier = state.channelId;
+      const createKeyPromises = newTags.map(tag => {
         const formattedTag = tag.trim().replace(/^#/, '');
-        console.log('Creating key for tag:', formattedTag);
 
         // Convert data to x-www-form-urlencoded format
         const params = new URLSearchParams();
-        params.append('kernelIdentifier', kernelId);
+        params.append('kernelIdentifier', kernelIdentifier);
         params.append('text', formattedTag);
         params.append('culture', 'en');
 
@@ -84,6 +82,7 @@ const AddNewChannel = () => {
           console.log('Key creation response:', data);
           if (data._id) {
             console.log(`Key for tag "${formattedTag}" created successfully:`, data);
+            setSavedTags(prev => new Set(prev).add(tag)); // Add the tag to savedTags
           } else {
             console.warn(`Key for tag "${formattedTag}" was not created successfully:`, data);
           }
@@ -96,8 +95,8 @@ const AddNewChannel = () => {
       await Promise.all(createKeyPromises);
       console.log('All keys created successfully');
     } catch (error) {
-      setSearchError('Failed to perform search');
-      console.error('Error during search:', error);
+      setSearchError('Failed to save tags');
+      console.error('Error during saving tags:', error);
     } finally {
       setLoading(false);
     }
@@ -111,6 +110,7 @@ const AddNewChannel = () => {
         { content: (
           <div className="channel_name_block">
             <div className="channel_name_autor">
+                <h2 className="channel_name" style={{ textAlign: "center" }}>Edit feed</h2>
               <h2 className="channel_name">{channelName}</h2>
             </div>
           </div>
@@ -145,8 +145,8 @@ const AddNewChannel = () => {
               <button className="add_key_button" onClick={handleAddTag}>
                 <i className="fas fa-plus"></i> Add
               </button>
-              <button className="search_button add_key_button" onClick={handleSearch}>
-                Search
+              <button className="save_tags_button add_key_button" onClick={handleSaveTags}>
+                Save 
               </button>
               {error && <div className="error_message">{error}</div>}
               {searchError && <div className="error_message">{searchError}</div>}
@@ -170,4 +170,4 @@ const AddNewChannel = () => {
   );
 };
 
-export default AddNewChannel;
+export default EditChannel;
