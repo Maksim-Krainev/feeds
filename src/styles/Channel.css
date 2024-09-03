@@ -1,0 +1,113 @@
+
+/* info box */
+
+
+.channel_info_cont {
+    margin: 0 auto;
+    padding: 5px;
+}
+  
+.channel_tit_box {
+    width: fit-content;
+    margin: 0 auto;
+}
+  
+.channel_title {
+    font-size: 23px;
+    font-weight: 600;
+}
+  
+.channel_info_box {
+    display: flex;
+    margin-top: 5px;
+    font-size: 14px;
+}
+  
+.channel_update {
+    margin-right: 5px;
+    padding: 2px 7px;
+    border-radius: 10em;
+    border: 1px solid #9b9b9b;
+    margin: 0 auto;
+}
+
+/* chanell bg */
+
+.container_box.dark {
+    background-color: #9b9b9b; 
+    color: #000000; 
+  }
+  
+.container_box.dark .channel_update,
+.container_box.dark .channel_events {
+    border: 1px solid white; 
+}
+  
+.container_box.dark .chan_keyword {
+    background-color: white; 
+    color: black; 
+}
+  
+  
+.container_box.light {
+    background-color: #ffffff; 
+    color: #000000; 
+}
+  
+.container_box.light .channel_update,
+.container_box.light .channel_events {
+    border: 1px solid #9b9b9b; 
+}
+
+.container_box.light .chan_keyword {
+    background-color: #9b9b9b; 
+    color: rgb(0, 0, 0); 
+}
+  
+  
+.channel_edit {
+    margin-right: 15px;
+}
+
+/* Edit button */
+.channel_edit_button {
+    display: none;
+    position: absolute;
+    top: 5%;
+    right: 10%;
+    background-color: inherit;
+    border: none;
+    padding: 3px 8px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.container_box:hover .channel_edit_button {
+    display: block;
+    opacity: 1;
+}
+
+.container_box {
+    position: relative;
+    transition: box-shadow 0.3s ease, transform 0.3s ease; 
+  }
+  
+  .channel_edit_button:hover {
+    opacity: 1;
+}
+
+.container_box-shadow:hover{
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    transform: translateY(-4px); 
+}
+
+.error_message_secondary {
+    font-weight: bold;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 5px;
+  }

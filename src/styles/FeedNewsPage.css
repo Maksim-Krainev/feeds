@@ -1,0 +1,36 @@
+
+/* events */
+
+.channel_events {
+    display: flex;
+    max-width: 150px;
+    padding: 2px 7px;
+    border-radius: 10em;
+    border: 1px solid #9b9b9b;
+    align-items: center;
+}
+  
+.new_event {
+    color: #ed0000;
+    font-weight: 600;
+}
+.news_date {
+    font-size: 14px;
+    color: #666666;
+    margin-bottom: 8px;
+}
+
+.news_text {
+    font-size: 16px;
+    color: #333333; 
+    margin-bottom: 8px;
+}
+
+a {
+    color: #1a73e8; 
+    text-decoration: none; 
+}
+
+a:hover {
+    text-decoration: underline; 
+}

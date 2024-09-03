@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Menu from '../components/MenuBox/MenuBox';
-import "../index.css";
+
 
 const Channel = () => {
   const [channels, setChannels] = useState([]);
@@ -93,10 +93,10 @@ const Channel = () => {
   return (
     <div>
       <Menu />
-      <div className='container_box gray_bg'>
+      <div className='container_box  gray_bg'>
         <div className="channels_conf_buts">
           <h1>List of your feeds</h1>
-          <Link to='/add-new-channel' className="channel_add_but" >New feed</Link>
+          <Link to='/add-new-channel' className="channel_add_but">New feed</Link>
         </div>
         {selectionError && (
           <div className="error_message">{selectionError}</div>
@@ -108,7 +108,7 @@ const Channel = () => {
         channels.map((channel, index) => (
           <div 
             key={channel._id}
-            className={`container_box ${index % 2 === 0 ? 'light' : 'dark'}`}
+            className={`container_box container_box-shadow ${index % 2 === 0 ? 'light' : 'dark'}`}
           >
             <Link 
               to={`/feed-news/${channel._id}`}
@@ -153,7 +153,7 @@ const Channel = () => {
         ))
       )}
     </div>
-  );
+  );  
 };
 
 export default Channel;

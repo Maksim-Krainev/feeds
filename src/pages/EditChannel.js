@@ -110,7 +110,7 @@ const EditChannel = () => {
         { content: (
           <div className="channel_name_block">
             <div className="channel_name_autor">
-                <h2 className="channel_name" style={{ textAlign: "center" }}>Edit feed</h2>
+              <h2 className="channel_name" style={{ textAlign: "center" }}>Edit feed</h2>
               <h2 className="channel_name">{channelName}</h2>
             </div>
           </div>
@@ -148,8 +148,26 @@ const EditChannel = () => {
               <button className="save_tags_button add_key_button" onClick={handleSaveTags}>
                 Save 
               </button>
-              {error && <div className="error_message">{error}</div>}
-              {searchError && <div className="error_message">{searchError}</div>}
+              {error && (
+                <div className="error_message_wrapper">
+                  <div className="error_message">
+                    <i className="fas fa-exclamation-triangle"></i> {error}
+                    <button className="error_close_button" onClick={() => setError(null)}>
+                      &times;
+                    </button>
+                  </div>
+                </div>
+              )}
+              {searchError && (
+                <div className="error_message_wrapper">
+                  <div className="error_message">
+                    <i className="fas fa-exclamation-triangle"></i> {searchError}
+                    <button className="error_close_button" onClick={() => setSearchError(null)}>
+                      &times;
+                    </button>
+                  </div>
+                </div>
+              )}
               {loading && <div>Loading...</div>}
             </div>
           </div>

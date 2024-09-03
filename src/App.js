@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Channel from './pages/Channels';
 import AddNewChannel from './pages/AddNewChannel';
@@ -7,7 +7,7 @@ import FeedNewsPage from './pages/FeedNewsPage';
 import EditChannel from './pages/EditChannel'; 
 import Menu from './components/MenuBox/MenuBox';
 import ScrollToTop from './components/ScrollTop/ScrollTop'; 
-import './index.css';
+import './styles/style.css';
 
 const App = () => {
   return (
@@ -20,6 +20,7 @@ const App = () => {
         <Route path="/add-new-channel" element={<AddNewChannel />} />
         <Route path="/feed-news/:feedId" element={<FeedNewsPage />} />
         <Route path="/edit-channel/:channelId" element={<EditChannel />} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </div>
   );

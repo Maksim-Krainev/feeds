@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import "./MenuBox.css"
 
 const Menu = () => {
   const [menuVisible, setMenuVisible] = useState(false);
